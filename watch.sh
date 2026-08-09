@@ -56,7 +56,22 @@ update_readme() {
   local count updated listing
   count=$(git ls-files -- '*.mscz' | wc -l | tr -d ' ')
   updated=$(date '+%Y-%m-%d %H:%M')
-  listing=$(git ls-files -- '*.mscz' | sort | sed 's/^/- /')
+  listing=$(git ls-files -- '*.mscz' | sort | awk -F/ '
+    {
+      dir = (NF == 1) ? "(root)" : $1
+      file = $NF
+      files[dir] = files[dir] "- " file "\n"
+      counts[dir]++
+      if (!(dir in seen)) { seen[dir]=1; order[++n]=dir }
+    }
+    END {
+      for (i=1; i<=n; i++) {
+        d = order[i]
+        label = (d == "(root)") ? "Root" : d "/"
+        printf "**%s** (%d)\n%s\n", label, counts[d], files[d]
+      }
+    }
+  ')
 
   {
     echo "# musescore-scores"

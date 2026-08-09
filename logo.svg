@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 105" width="540" height="105">
+  <!-- Background -->
+  <rect width="540" height="105" rx="10" fill="#0D1117"/>
+
+  <!-- Staff lines (navy-tinted, not neutral gray) -->
+  <g stroke="#2A3A52" stroke-width="1.2" stroke-linecap="round">
+    <line x1="28" y1="38" x2="143" y2="38"/>
+    <line x1="28" y1="46" x2="143" y2="46"/>
+    <line x1="28" y1="54" x2="143" y2="54"/>
+    <line x1="28" y1="62" x2="143" y2="62"/>
+    <line x1="28" y1="70" x2="143" y2="70"/>
+  </g>
+
+  <!-- Note head: sitting in 3rd space from bottom (between y=54 and y=62) -->
+  <ellipse cx="90" cy="58" rx="9.5" ry="7.2" fill="#4A9EFF" transform="rotate(-18 90 58)"/>
+
+  <!-- Stem -->
+  <line x1="98.8" y1="55" x2="98.8" y2="38" stroke="#4A9EFF" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- Arrow tip replaces the flag — the push -->
+  <path d="M 93.5,38 L 98.8,27 L 104.1,38 Z" fill="#2ECC71"/>
+
+  <!-- Vertical divider -->
+  <line x1="158" y1="18" x2="158" y2="87" stroke="#1E2A3D" stroke-width="1"/>
+
+  <!-- Project name -->
+  <text x="175" y="52"
+        font-family="'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace"
+        font-size="22"
+        font-weight="600"
+        fill="#E2E8F0"
+        letter-spacing="-0.2">musescore-backup</text>
+
+  <!-- Tagline -->
+  <text x="175" y="69"
+        font-family="'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace"
+        font-size="11"
+        fill="#5A6A80">fswatch + launchd · auto-commit .mscz to GitHub</text>
+
+  <!-- Badges -->
+  <g font-family="-apple-system, 'Helvetica Neue', sans-serif" font-size="9.5">
+    <rect x="175" y="78" width="52" height="17" rx="8.5" fill="#1A2236" stroke="#2A3A52" stroke-width="0.8"/>
+    <text x="201" y="90.5" fill="#8A9BB0" text-anchor="middle">macOS</text>
+
+    <rect x="233" y="78" width="40" height="17" rx="8.5" fill="#1A2236" stroke="#2A3A52" stroke-width="0.8"/>
+    <text x="253" y="90.5" fill="#8A9BB0" text-anchor="middle">bash</text>
+
+    <rect x="279" y="78" width="56" height="17" rx="8.5" fill="#1A2236" stroke="#2A3A52" stroke-width="0.8"/>
+    <text x="307" y="90.5" fill="#8A9BB0" text-anchor="middle">launchd</text>
+
+    <rect x="341" y="78" width="38" height="17" rx="8.5" fill="#1A2236" stroke="#2A3A52" stroke-width="0.8"/>
+    <text x="360" y="90.5" fill="#8A9BB0" text-anchor="middle">free</text>
+  </g>
+</svg>

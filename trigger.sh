@@ -24,10 +24,13 @@ for _raw in "${_raw_dirs[@]}"; do
 done
 log "Searching: ${search_dirs[*]}"
 
-# Stage all .mscz files found in SCORES_DIRS (new, modified)
+# Stage all .mscz files: depth-1 scan of GIT_DIR + recursive scan of SCORES_DIRS
 while IFS= read -r -d '' f; do
   git add -- "$f"
-done < <(find "${search_dirs[@]}" -name "*.mscz" ! -path "*/$EXCLUDE_PATTERN/*" -print0)
+done < <(
+  find "$GIT_DIR" -maxdepth 1 -name "*.mscz" ! -path "*/$EXCLUDE_PATTERN/*" -print0
+  find "${search_dirs[@]}" -name "*.mscz" ! -path "*/$EXCLUDE_PATTERN/*" -print0
+)
 
 git add -u -- '*.mscz'  # stage deletions
 

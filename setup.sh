@@ -59,8 +59,15 @@ fi
 
 # Create GitHub repo and push if no remote
 if ! git remote get-url origin &>/dev/null; then
-  gh repo create "$REPO_NAME" --private --source=. --remote=origin --push
-  echo "Created GitHub repo: $REPO_NAME"
+  if ! gh repo create "$REPO_NAME" --private --source=. --remote=origin --push 2>/dev/null; then
+    # Repo already exists — add remote and push
+    OWNER=$(gh api user -q .login)
+    git remote add origin "https://github.com/${OWNER}/${REPO_NAME}.git"
+    git push -u origin "$BRANCH"
+    echo "Using existing GitHub repo: ${OWNER}/${REPO_NAME}"
+  else
+    echo "Created GitHub repo: $REPO_NAME"
+  fi
 else
   git push -u origin "$BRANCH"
 fi

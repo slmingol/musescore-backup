@@ -2,7 +2,7 @@
   <img src="logo.svg" alt="musescore-backup" width="540">
 </p>
 
-Auto-commits `.mscz` changes to a private GitHub repo. Watches your MuseScore scores directory, debounces 5 seconds after the last write, then `git commit && git push`. Runs as a launchd agent — starts automatically on login, no terminal required.
+Auto-commits `.mscz` changes to a private GitHub repo. Watches one or more directories for `.mscz` file changes, debounces 5 seconds after the last write, then `git commit && git push`. Runs as a launchd agent — starts automatically on login, no terminal required.
 
 ## Requirements
 
@@ -34,16 +34,18 @@ All settings are environment variables with sensible defaults.
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `SCORES_DIR` | `~/Documents/MuseScore4/Scores` | Scores directory to watch |
-| `REPO_NAME` | `musescore-scores` | GitHub repo name to create |
+| `SCORES_DIRS` | `~/Documents/MuseScore4/Scores ~/Desktop ~/Downloads` | Space-separated list of dirs to watch |
+| `GIT_DIR` | `/Users/jay` | Root dir where the git repo lives (must contain all watched dirs) |
+| `EXCLUDE_PATTERN` | `Library/CloudStorage` | Regex pattern — matching paths are ignored by fswatch |
+| `REPO_NAME` | `musescore-scores` | GitHub repo name to create (setup.sh only) |
 | `BRANCH` | `main` | Git branch |
 | `DEBOUNCE` | `5` | Seconds to wait after last file change |
 
 Override at runtime:
 
 ```bash
-SCORES_DIR=/path/to/scores ./setup.sh
-SCORES_DIR=/path/to/scores ./install-launchd.sh
+SCORES_DIRS="~/Music/Scores ~/Desktop" GIT_DIR=/Users/jay ./setup.sh
+SCORES_DIRS="~/Music/Scores ~/Desktop" GIT_DIR=/Users/jay ./install-launchd.sh
 ```
 
 ## Logs

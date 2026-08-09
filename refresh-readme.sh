@@ -37,7 +37,7 @@ while IFS=$'\t' read -r date path; do
 done < <(git log --name-only --format="%ad" --date=format:'%Y-%m-%d %H:%M' -- '*.mscz' | awk '
   /^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$/ { date=$0; next }
   /\.mscz$/ { if (!seen[$0]++) print date "\t" $0 }
-')
+' | sort -t$'\t' -k2)
 
 {
   echo "# musescore-scores"

@@ -65,23 +65,13 @@ update_readme() {
     [[ "$folder" == "." ]] && folder=""
     url_path="${path// /%20}"
 
-    if [[ -f "$path" ]]; then
-      size=$(stat -f %z "$path")
-      if   (( size >= 1048576 )); then szfmt="$(( size/1048576 )) MB"
-      elif (( size >= 1024 ));    then szfmt="$(( size/1024 )) KB"
-      else                             szfmt="${size} B"
-      fi
-    else
-      szfmt="—"
-    fi
-
     if [[ -z "$folder" ]]; then
-      rows+="| [${name}](${url_path}) | _(root)_ | ${szfmt} | \`${date}\` |"$'\n'
+      rows+="| [${name}](${url_path}) | _(root)_ | \`${date}\` |"$'\n'
     else
       url_folder="${folder// /%20}"
-      rows+="| [${name}](${url_path}) | [${folder}/](${url_folder}/) | ${szfmt} | \`${date}\` |"$'\n'
+      rows+="| [${name}](${url_path}) | [${folder}/](${url_folder}/) | \`${date}\` |"$'\n'
     fi
-  done < <(git ls-files -- '*.mscz' | sort | while IFS= read -r f; do
+  done < <({ git ls-files -- '*.mscz' | grep '/' | sort; git ls-files -- '*.mscz' | grep -v '/' | sort; } | while IFS= read -r f; do
     date=$(git log -1 --format="%ad" --date=format:'%Y-%m-%d %H:%M' -- "$f")
     printf '%s\t%s\n' "$date" "$f"
   done)
@@ -93,8 +83,8 @@ update_readme() {
     echo ""
     echo "*Last updated: ${updated}*"
     echo ""
-    echo "| 🎵 Score | 📁 Folder | 💾 Size | 📅 Committed |"
-    echo "|---------|---------|--------|-------------|"
+    echo "| 🎵 Score | 📁 Folder | 📅 Committed |"
+    echo "|---------|---------|-------------|"
     printf '%s' "$rows"
   } > README.md
 

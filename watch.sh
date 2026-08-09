@@ -49,6 +49,16 @@ commit_changes() {
   log "Pushed: $msg"
 }
 
+_sorted_mscz() {
+  # Folder files: sort by (top-level dir, full dirname, basename) then root files
+  { git ls-files -- '*.mscz' | grep '/' | while IFS= read -r f; do
+      printf '%s\t%s\t%s\t%s\n' \
+        "$(printf '%s' "$f" | cut -d/ -f1)" "$(dirname "$f")" "$(basename "$f")" "$f"
+    done | sort -t$'\t' -k1,1 -k2,2 -k3,3 | awk -F'\t' '{print $NF}'
+    git ls-files -- '*.mscz' | grep -v '/' | sort
+  }
+}
+
 update_readme() {
   local dir="$1"
   cd "$dir"
@@ -59,9 +69,7 @@ update_readme() {
   tmpdata=$(mktemp)
   row_h=26; header_h=40; width=700
 
-  { git ls-files -- '*.mscz' | grep '/' | sort
-    git ls-files -- '*.mscz' | grep -v '/' | sort
-  } | while IFS= read -r f; do
+  _sorted_mscz | while IFS= read -r f; do
     local d n fld
     d=$(git log -1 --format="%ad" --date=format:'%Y-%m-%d %H:%M' -- "$f")
     n=$(basename "$f"); fld=$(dirname "$f"); [[ "$fld" == "." ]] && fld=""
@@ -103,6 +111,21 @@ update_readme() {
     printf '</svg>\n'
   } > inventory.svg
 
+  # Build clickable links for <details> section
+  local links=""
+  links+="| Score | Folder | Committed |"$'\n'
+  links+="|-------|--------|-----------|"$'\n'
+  while IFS=$'\t' read -r name folder date; do
+    local url_path url_folder
+    url_path="${folder:+${folder}/}${name}"; url_path="${url_path// /%20}"
+    if [[ -z "$folder" ]]; then
+      links+="| [${name}](${url_path}) | -- | \`${date}\` |"$'\n'
+    else
+      url_folder="${folder// /%20}"
+      links+="| [${name}](${url_path}) | [${folder}/](${url_folder}/) | \`${date}\` |"$'\n'
+    fi
+  done < "$tmpdata"
+
   rm -f "$tmpdata"
 
   {
@@ -113,6 +136,13 @@ update_readme() {
     echo "## Inventory"
     echo ""
     echo "![inventory](inventory.svg)"
+    echo ""
+    echo "<details>"
+    echo "<summary>Browse all files</summary>"
+    echo ""
+    printf '%s' "$links"
+    echo ""
+    echo "</details>"
   } > README.md
 
   if [[ -n "$(git status --porcelain README.md inventory.svg)" ]]; then

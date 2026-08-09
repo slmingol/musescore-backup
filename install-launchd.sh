@@ -5,7 +5,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WATCH_SCRIPT="$SCRIPT_DIR/watch.sh"
-SCORES_DIR="${SCORES_DIR:-$HOME/Documents/MuseScore4/Scores}"
+SCORES_DIR="${SCORES_DIR:-/Users/jay}"
+EXCLUDE_PATTERN="${EXCLUDE_PATTERN:-Library/CloudStorage}"
 LABEL="com.user.musescore-backup"
 PLIST="$HOME/Library/LaunchAgents/${LABEL}.plist"
 LOG_DIR="$HOME/Library/Logs"
@@ -30,6 +31,8 @@ cat > "$PLIST" <<EOF
   <dict>
     <key>SCORES_DIR</key>
     <string>${SCORES_DIR}</string>
+    <key>EXCLUDE_PATTERN</key>
+    <string>${EXCLUDE_PATTERN}</string>
     <key>PATH</key>
     <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
     <key>HOME</key>

@@ -3,9 +3,10 @@
 
 set -euo pipefail
 
-SCORES_DIR="${SCORES_DIR:-$HOME/Documents/MuseScore4/Scores}"
+SCORES_DIR="${SCORES_DIR:-/Users/jay}"
 BRANCH="${BRANCH:-main}"
 DEBOUNCE="${DEBOUNCE:-5}"  # seconds to wait after last change before committing
+EXCLUDE_PATTERN="${EXCLUDE_PATTERN:-Library/CloudStorage}"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"; }
 
@@ -23,16 +24,19 @@ commit_changes() {
   local dir="$1"
   cd "$dir"
 
-  # Only act if there are actual changes
-  if git diff --quiet && git diff --cached --quiet && [[ -z "$(git ls-files --others --exclude-standard)" ]]; then
+  # Only act if there are .mscz changes
+  if git diff --quiet -- '*.mscz' && git diff --cached --quiet -- '*.mscz' && [[ -z "$(git ls-files --others --exclude-standard -- '*.mscz')" ]]; then
     return
   fi
 
-  # Get changed file names for commit message
+  # Get changed .mscz file names for commit message
   local changed
-  changed=$(git status --porcelain | awk '{print $2}' | xargs -I{} basename {} | tr '\n' ', ' | sed 's/,$//')
+  changed=$(git status --porcelain -- '*.mscz' | awk '{print $2}' | xargs -I{} basename {} | tr '\n' ', ' | sed 's/,$//')
 
-  git add -A
+  # Stage only .mscz files (handles spaces in filenames)
+  while IFS= read -r f; do
+    [[ -n "$f" ]] && git add -- "$f"
+  done < <(git status --porcelain -- '*.mscz' | awk '{print $2}')
 
   local msg="update: $changed"
   if [[ ${#msg} -gt 72 ]]; then
@@ -50,6 +54,7 @@ log "Watching $SCORES_DIR for changes (branch: $BRANCH)..."
 fswatch \
   --recursive \
   --include='\.mscz$' \
+  --exclude="$EXCLUDE_PATTERN" \
   --extended \
   --event=Updated \
   --event=Created \

@@ -22,8 +22,8 @@ listing=$(git ls-files -- '*.mscz' | sort | awk -F/ '
     print "|--------|------:|"
     for (i=1; i<=n; i++) {
       d = order[i]
-      label = (d == "(root)") ? "_(root)_" : d "/"
-      printf "| %s | %d |\n", label, counts[d]
+      if (d == "(root)") { printf "| _(root)_ | %d |\n", counts[d] }
+      else { url=d; gsub(/ /, "%20", url); printf "| [%s/](%s/) | %d |\n", d, url, counts[d] }
     }
   }
 ')
@@ -35,7 +35,9 @@ recent=$(git log --name-only --format="%ad" --date=format:'%Y-%m-%d %H:%M' -- '*
     print "| File | Committed |"
     print "|------|-----------|"
     for (i=1; i<=n && i<=10; i++) {
-      split(files[i], a, "/"); printf "| %s | %s |\n", a[length(a)], dates[i]
+      path=files[i]; url=path; gsub(/ /, "%20", url)
+      split(path, a, "/"); name=a[length(a)]
+      printf "| [%s](%s) | %s |\n", name, url, dates[i]
     }
   }
 ')

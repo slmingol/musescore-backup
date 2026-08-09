@@ -1,56 +1,58 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="120" viewBox="0 0 900 120">
-  <rect width="900" height="120" rx="8" fill="#0D1117"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="155" viewBox="0 0 900 155">
+  <rect width="900" height="155" rx="8" fill="#0D1117"/>
 
-  <!-- ===== STACKED .mscz SCORE FILES ===== -->
+  <!-- ===== STACKED .mscz SCORE FILES (bigger, more visible) ===== -->
 
   <!-- File 3 (back, angled) -->
-  <g transform="rotate(-5,118,100)">
-    <rect x="14" y="82" width="208" height="34" rx="3" fill="#0C1822" stroke="#1A2D42" stroke-width="1.3"/>
-    <line x1="26" y1="90" x2="210" y2="90" stroke="#1A2D42" stroke-width="0.9"/>
-    <line x1="26" y1="95" x2="210" y2="95" stroke="#1A2D42" stroke-width="0.9"/>
-    <line x1="26" y1="100" x2="210" y2="100" stroke="#1A2D42" stroke-width="0.9"/>
-    <line x1="26" y1="105" x2="210" y2="105" stroke="#1A2D42" stroke-width="0.9"/>
-    <line x1="26" y1="110" x2="210" y2="110" stroke="#1A2D42" stroke-width="0.9"/>
-    <text x="168" y="94" font-family="SF Mono,Consolas,monospace" font-size="8" fill="#1A2D42">.mscz</text>
+  <g transform="rotate(-5,128,120)">
+    <rect x="12" y="104" width="254" height="52" rx="3" fill="#0C1822" stroke="#1A2D42" stroke-width="1.5"/>
+    <line x1="54" y1="114" x2="254" y2="114" stroke="#1A2D42" stroke-width="1"/>
+    <line x1="54" y1="122" x2="254" y2="122" stroke="#1A2D42" stroke-width="1"/>
+    <line x1="54" y1="130" x2="254" y2="130" stroke="#1A2D42" stroke-width="1"/>
+    <line x1="54" y1="138" x2="254" y2="138" stroke="#1A2D42" stroke-width="1"/>
+    <line x1="54" y1="146" x2="254" y2="146" stroke="#1A2D42" stroke-width="1"/>
+    <text x="198" y="118" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#1A2D42">.mscz</text>
   </g>
 
   <!-- File 2 (middle, slight angle) -->
-  <g transform="rotate(-2,118,98)">
-    <rect x="14" y="78" width="208" height="34" rx="3" fill="#0E1E2E" stroke="#1E3048" stroke-width="1.3"/>
-    <line x1="26" y1="86" x2="210" y2="86" stroke="#1E3048" stroke-width="0.9"/>
-    <line x1="26" y1="91" x2="210" y2="91" stroke="#1E3048" stroke-width="0.9"/>
-    <line x1="26" y1="96" x2="210" y2="96" stroke="#1E3048" stroke-width="0.9"/>
-    <line x1="26" y1="101" x2="210" y2="101" stroke="#1E3048" stroke-width="0.9"/>
-    <line x1="26" y1="106" x2="210" y2="106" stroke="#1E3048" stroke-width="0.9"/>
-    <text x="168" y="90" font-family="SF Mono,Consolas,monospace" font-size="8" fill="#1E3048">.mscz</text>
+  <g transform="rotate(-2,128,116)">
+    <rect x="12" y="94" width="254" height="52" rx="3" fill="#0E1E2E" stroke="#1E3048" stroke-width="1.5"/>
+    <line x1="54" y1="104" x2="254" y2="104" stroke="#1E3048" stroke-width="1"/>
+    <line x1="54" y1="112" x2="254" y2="112" stroke="#1E3048" stroke-width="1"/>
+    <line x1="54" y1="120" x2="254" y2="120" stroke="#1E3048" stroke-width="1"/>
+    <line x1="54" y1="128" x2="254" y2="128" stroke="#1E3048" stroke-width="1"/>
+    <line x1="54" y1="136" x2="254" y2="136" stroke="#1E3048" stroke-width="1"/>
+    <text x="198" y="108" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#1E3048">.mscz</text>
   </g>
 
   <!-- File 1 (top, flat — Jinxey sleeps here) -->
-  <rect x="14" y="74" width="210" height="36" rx="3" fill="#122032" stroke="#2A4060" stroke-width="1.6"/>
-  <!-- Staff lines on top file (clear) -->
-  <line x1="44" y1="81" x2="210" y2="81" stroke="#2A4060" stroke-width="1"/>
-  <line x1="44" y1="86" x2="210" y2="86" stroke="#2A4060" stroke-width="1"/>
-  <line x1="44" y1="91" x2="210" y2="91" stroke="#2A4060" stroke-width="1"/>
-  <line x1="44" y1="96" x2="210" y2="96" stroke="#2A4060" stroke-width="1"/>
-  <line x1="44" y1="101" x2="210" y2="101" stroke="#2A4060" stroke-width="1"/>
-  <!-- Treble clef -->
-  <text x="22" y="103" font-family="serif" font-size="26" fill="#2A4060">𝄞</text>
-  <!-- Notes on file staff -->
-  <ellipse cx="60"  cy="88" rx="4" ry="3" fill="#334D6E" transform="rotate(-15,60,88)"/>
-  <line x1="64"  y1="87" x2="64"  y2="76" stroke="#334D6E" stroke-width="1.3"/>
-  <ellipse cx="76"  cy="84" rx="4" ry="3" fill="#334D6E" transform="rotate(-15,76,84)"/>
-  <line x1="80"  y1="83" x2="80"  y2="72" stroke="#334D6E" stroke-width="1.3"/>
-  <ellipse cx="92"  cy="91" rx="4" ry="3" fill="#334D6E" transform="rotate(-15,92,91)"/>
-  <line x1="96"  y1="90" x2="96"  y2="79" stroke="#334D6E" stroke-width="1.3"/>
-  <ellipse cx="108" cy="86" rx="4" ry="3" fill="#334D6E" transform="rotate(-15,108,86)"/>
-  <line x1="112" y1="85" x2="112" y2="74" stroke="#334D6E" stroke-width="1.3"/>
-  <!-- .mscz label on top file -->
-  <text x="148" y="103" font-family="SF Mono,Consolas,monospace" font-size="9" font-weight="700" fill="#3A5878">.mscz</text>
+  <rect x="12" y="84" width="256" height="52" rx="3" fill="#122032" stroke="#2A4060" stroke-width="2"/>
+  <!-- Staff lines on top file -->
+  <line x1="56" y1="94"  x2="256" y2="94"  stroke="#2A4060" stroke-width="1.1"/>
+  <line x1="56" y1="102" x2="256" y2="102" stroke="#2A4060" stroke-width="1.1"/>
+  <line x1="56" y1="110" x2="256" y2="110" stroke="#2A4060" stroke-width="1.1"/>
+  <line x1="56" y1="118" x2="256" y2="118" stroke="#2A4060" stroke-width="1.1"/>
+  <line x1="56" y1="126" x2="256" y2="126" stroke="#2A4060" stroke-width="1.1"/>
+  <!-- Treble clef (big) -->
+  <text x="14" y="132" font-family="serif" font-size="46" fill="#2A4060">𝄞</text>
+  <!-- Notes on staff -->
+  <ellipse cx="72"  cy="100" rx="5" ry="4" fill="#334D6E" transform="rotate(-15,72,100)"/>
+  <line x1="77"  y1="99"  x2="77"  y2="86"  stroke="#334D6E" stroke-width="1.5"/>
+  <ellipse cx="92"  cy="106" rx="5" ry="4" fill="#334D6E" transform="rotate(-15,92,106)"/>
+  <line x1="97"  y1="105" x2="97"  y2="92"  stroke="#334D6E" stroke-width="1.5"/>
+  <ellipse cx="112" cy="94"  rx="5" ry="4" fill="#334D6E" transform="rotate(-15,112,94)"/>
+  <line x1="117" y1="93"  x2="117" y2="80"  stroke="#334D6E" stroke-width="1.5"/>
+  <ellipse cx="132" cy="110" rx="5" ry="4" fill="#334D6E" transform="rotate(-15,132,110)"/>
+  <line x1="137" y1="109" x2="137" y2="96"  stroke="#334D6E" stroke-width="1.5"/>
+  <ellipse cx="152" cy="98"  rx="5" ry="4" fill="#334D6E" transform="rotate(-15,152,98)"/>
+  <line x1="157" y1="97"  x2="157" y2="84"  stroke="#334D6E" stroke-width="1.5"/>
+  <!-- .mscz label (prominent) -->
+  <text x="180" y="126" font-family="SF Mono,Consolas,monospace" font-size="11" font-weight="700" fill="#3A5878">.mscz</text>
 
-  <!-- ===== JINXEY (scaled 1.3x around cat center) ===== -->
-  <g transform="translate(105,57) scale(1.3) translate(-105,-57)">
+  <!-- ===== JINXEY — scaled 1.3x, shifted down 22px to sit on files ===== -->
+  <g transform="translate(0,22) translate(105,57) scale(1.3) translate(-105,-57)">
 
-    <!-- Tail (tighter curve to stay left of divider after scaling) -->
+    <!-- Tail (tight curl) -->
     <path d="M158 74 C 186 80 190 58 170 52"
           stroke="#3A4A5C" stroke-width="8" fill="none" stroke-linecap="round"/>
 
@@ -70,7 +72,6 @@
     <!-- Eyes CLOSED -->
     <path d="M30,52 Q38,44 46,52" stroke="#3FB950" stroke-width="3.2" fill="none" stroke-linecap="round"/>
     <path d="M48,52 Q56,44 64,52" stroke="#3FB950" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-    <!-- Lashes -->
     <line x1="30" y1="52" x2="27" y2="56" stroke="#3FB950" stroke-width="1.4"/>
     <line x1="46" y1="52" x2="48" y2="56" stroke="#3FB950" stroke-width="1.4"/>
     <line x1="48" y1="52" x2="46" y2="56" stroke="#3FB950" stroke-width="1.4"/>
@@ -103,25 +104,25 @@
   </g>
 
   <!-- ===== RIGHT SECTION ===== -->
-  <line x1="255" y1="10" x2="255" y2="110" stroke="#2A3A52" stroke-width="1"/>
+  <line x1="278" y1="12" x2="278" y2="143" stroke="#2A3A52" stroke-width="1"/>
 
   <!-- Title -->
-  <text x="270" y="52" font-family="SF Mono,Consolas,monospace" font-size="26" font-weight="700">
+  <text x="294" y="62" font-family="SF Mono,Consolas,monospace" font-size="26" font-weight="700">
     <tspan fill="#E6EDF3">musescore</tspan><tspan fill="#4A9EFF">-scores</tspan>
   </text>
 
   <!-- Subtitle -->
-  <text x="270" y="72" font-family="SF Mono,Consolas,monospace" font-size="12" fill="#8B949E">Jinxey's private score archive · auto-committed on save</text>
+  <text x="294" y="82" font-family="SF Mono,Consolas,monospace" font-size="12" fill="#8B949E">Jinxey's private score archive · auto-committed on save</text>
 
   <!-- Rule -->
-  <line x1="270" y1="83" x2="882" y2="83" stroke="#2A3A52" stroke-width="1"/>
+  <line x1="294" y1="95" x2="882" y2="95" stroke="#2A3A52" stroke-width="1"/>
 
   <!-- Badges -->
-  <text x="270" y="99" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#3FB950">fswatch</text>
-  <text x="318" y="99" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
-  <text x="328" y="99" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">launchd</text>
-  <text x="382" y="99" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
-  <text x="392" y="99" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">macOS</text>
-  <text x="440" y="99" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
-  <text x="450" y="99" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">git · github</text>
+  <text x="294" y="112" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#3FB950">fswatch</text>
+  <text x="342" y="112" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
+  <text x="352" y="112" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">launchd</text>
+  <text x="406" y="112" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
+  <text x="416" y="112" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">macOS</text>
+  <text x="464" y="112" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
+  <text x="474" y="112" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">git · github</text>
 </svg>

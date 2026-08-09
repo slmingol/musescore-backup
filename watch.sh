@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
-# Watch MuseScore scores dir and commit+push any .mscz changes to GitHub
+# Watch MuseScore scores dirs and commit+push any .mscz changes to GitHub
 
 set -euo pipefail
 
-SCORES_DIR="${SCORES_DIR:-/Users/jay}"
+SCORES_DIRS="${SCORES_DIRS:-$HOME/Documents/MuseScore4/Scores $HOME/Desktop $HOME/Downloads}"
+GIT_DIR="${GIT_DIR:-/Users/jay}"
 BRANCH="${BRANCH:-main}"
 DEBOUNCE="${DEBOUNCE:-5}"  # seconds to wait after last change before committing
 EXCLUDE_PATTERN="${EXCLUDE_PATTERN:-Library/CloudStorage}"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"; }
 
-if [[ ! -d "$SCORES_DIR/.git" ]]; then
-  log "ERROR: $SCORES_DIR is not a git repo. Run setup.sh first."
+if [[ ! -d "$GIT_DIR/.git" ]]; then
+  log "ERROR: $GIT_DIR is not a git repo. Run setup.sh first."
   exit 1
 fi
 
@@ -48,9 +49,10 @@ commit_changes() {
   log "Pushed: $msg"
 }
 
-log "Watching $SCORES_DIR for changes (branch: $BRANCH)..."
+read -ra watch_dirs <<< "$SCORES_DIRS"
 
-# fswatch emits one line per changed file; we debounce with a timer
+log "Watching: ${watch_dirs[*]} (branch: $BRANCH, excluding: $EXCLUDE_PATTERN)..."
+
 fswatch \
   --recursive \
   --include='\.mscz$' \
@@ -61,7 +63,7 @@ fswatch \
   --event=Removed \
   --event=Renamed \
   --latency="$DEBOUNCE" \
-  "$SCORES_DIR" | while IFS= read -r changed_path; do
+  "${watch_dirs[@]}" | while IFS= read -r changed_path; do
     log "Change detected: $(basename "$changed_path")"
-    commit_changes "$SCORES_DIR" || log "ERROR: commit/push failed"
+    commit_changes "$GIT_DIR" || log "ERROR: commit/push failed"
   done

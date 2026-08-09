@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
-# One-time setup: install deps, init git repo in scores dir, create GitHub repo
+# One-time setup: install deps, init git repo, create GitHub repo
 
 set -euo pipefail
 
-SCORES_DIR="${SCORES_DIR:-/Users/jay}"
+GIT_DIR="${GIT_DIR:-/Users/jay}"
+EXCLUDE_PATTERN="${EXCLUDE_PATTERN:-Library/CloudStorage}"
 REPO_NAME="${REPO_NAME:-musescore-scores}"
 BRANCH="${BRANCH:-main}"
 
-if [[ ! -d "$SCORES_DIR" ]]; then
-  echo "Scores dir not found: $SCORES_DIR"
-  echo "Set SCORES_DIR env var and retry."
+if [[ ! -d "$GIT_DIR" ]]; then
+  echo "Git dir not found: $GIT_DIR"
+  echo "Set GIT_DIR env var and retry."
   exit 1
 fi
 
@@ -31,12 +32,12 @@ if ! gh auth status &>/dev/null; then
   exit 1
 fi
 
-cd "$SCORES_DIR"
+cd "$GIT_DIR"
 
 # Init git if not already
 if [[ ! -d .git ]]; then
   git init -b "$BRANCH"
-  echo "Initialized git in $SCORES_DIR"
+  echo "Initialized git in $GIT_DIR"
 fi
 
 # Add .gitignore for non-score files
@@ -48,10 +49,12 @@ if [[ ! -f .gitignore ]]; then
 EOF
 fi
 
-# Initial commit if no commits yet
+# Initial commit of existing .mscz files if no commits yet
 if ! git rev-parse HEAD &>/dev/null 2>&1; then
-  git add -A
-  git commit -m "Initial commit: existing scores"
+  while IFS= read -r -d '' f; do
+    git add -- "$f"
+  done < <(find . -name "*.mscz" ! -path "*/$EXCLUDE_PATTERN/*" -print0)
+  git commit -m "Initial commit: existing scores" || echo "No .mscz files found, skipping initial commit."
 fi
 
 # Create GitHub repo and push if no remote
@@ -64,7 +67,7 @@ fi
 
 echo ""
 echo "Setup complete."
-echo "Scores dir: $SCORES_DIR"
+echo "Git dir:     $GIT_DIR"
 echo "GitHub repo: $(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || echo $REPO_NAME)"
 echo ""
 echo "Next: install the background watcher with:"

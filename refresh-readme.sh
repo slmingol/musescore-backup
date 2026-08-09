@@ -3,6 +3,7 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCORES_DIRS="${SCORES_DIRS:-$HOME/Documents/MuseScore4/Scores|$HOME/Desktop|$HOME/Downloads|$HOME/Desktop/FE:PIT EXERCISES|$HOME/Library/Application Support/MuseScore*}"
 GIT_DIR="${GIT_DIR:-/Users/jay}"
 BRANCH="${BRANCH:-main}"
@@ -86,6 +87,11 @@ done < "$tmpdata"
 
 rm -f "$tmpdata"
 
+# Copy logo from tooling repo if changed
+if ! cmp -s "$SCRIPT_DIR/scores-logo.svg" "$GIT_DIR/logo.svg" 2>/dev/null; then
+  cp "$SCRIPT_DIR/scores-logo.svg" "$GIT_DIR/logo.svg"
+fi
+
 # Build watched locations table
 loc_table=""
 loc_table+="| Path | Depth |"$'\n'
@@ -97,6 +103,8 @@ done
 
 {
   echo "# musescore-scores"
+  echo ""
+  echo '<img src="logo.svg" width="100%">'
   echo ""
   echo "Private backup of MuseScore 4 scores, auto-committed by [musescore-backup](https://github.com/slmingol/musescore-backup) via fswatch + launchd. Each \`.mscz\` save triggers a commit within 5 seconds."
   echo ""
@@ -119,8 +127,8 @@ done
   echo "</details>"
 } > README.md
 
-if [[ -n "$(git status --porcelain README.md inventory.svg)" ]]; then
-  git add -- README.md inventory.svg
+if [[ -n "$(git status --porcelain README.md inventory.svg logo.svg)" ]]; then
+  git add -- README.md inventory.svg logo.svg
   git commit -m "readme: ${count} files"
   git push origin "$BRANCH"
   echo "Updated (${count} files)."

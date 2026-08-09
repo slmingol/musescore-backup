@@ -2,73 +2,53 @@
   <img src="logo.svg" alt="musescore-backup" width="540">
 </p>
 
-Auto-commits `.mscz` changes to a private GitHub repo. Watches one or more directories for `.mscz` file changes, debounces 5 seconds after the last write, then `git commit && git push`. Runs as a launchd agent — starts automatically on login, no terminal required.
-
-## Requirements
-
-- macOS
-- [Homebrew](https://brew.sh)
-- GitHub CLI — `brew install gh && gh auth login`
+Auto-commits `.mscz` changes to a private GitHub repo via fswatch + launchd. Watches multiple directories, debounces 5s, then `git commit && git push`. Starts on login — no terminal required.
 
 ## Setup
 
 ```bash
-# 1. Install deps, init git repo in scores dir, create private GitHub repo
-./setup.sh
-
-# 2. Install as a persistent launchd agent (auto-starts on login)
-./install-launchd.sh
+./setup.sh            # install deps, init git repo, create GitHub repo
+./install-launchd.sh  # install persistent watcher (auto-starts on login)
+./install-autoupdate.sh  # optional: daily 3am pull + restart
 ```
 
-## Files
+Requires `gh auth login` first.
 
-| File | Purpose |
-|------|---------|
-| `setup.sh` | One-time setup: deps, git init, GitHub repo creation |
-| `watch.sh` | Watcher daemon (fswatch → debounce → git commit + push + readme update) |
-| `install-launchd.sh` | Registers `watch.sh` as a persistent launchd agent |
-| `install-autoupdate.sh` | Registers a daily 3am launchd timer to pull updates and restart the watcher |
-| `update.sh` | Pull latest, reload watcher — run manually or via autoupdate timer |
-| `trigger.sh` | Manually run a full backup cycle: commit all `.mscz` changes + update README |
-| `refresh-readme.sh` | Regenerate and push the README in the scores repo without committing scores |
+## Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `setup.sh` | One-time setup |
+| `watch.sh` | Watcher daemon |
+| `install-launchd.sh` | Install watcher as launchd agent |
+| `install-autoupdate.sh` | Install daily auto-updater (3am) |
+| `update.sh` | Pull latest + reload watcher |
+| `trigger.sh` | Manual full backup cycle |
+| `refresh-readme.sh` | Regenerate scores repo README |
 
 ## Configuration
 
-All settings are environment variables with sensible defaults.
-
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `SCORES_DIRS` | `~/Documents/MuseScore4/Scores ~/Desktop ~/Downloads` | Space-separated list of dirs to watch |
-| `GIT_DIR` | `/Users/jay` | Root dir where the git repo lives (must contain all watched dirs) |
-| `EXCLUDE_PATTERN` | `Library/CloudStorage` | Regex pattern — matching paths are ignored by fswatch |
-| `REPO_NAME` | `musescore-scores` | GitHub repo name to create (setup.sh only) |
+| `SCORES_DIRS` | `~/Documents/MuseScore4/Scores ~/Desktop ~/Downloads` | Space-separated dirs to watch |
+| `GIT_DIR` | `/Users/jay` | Git repo root |
+| `EXCLUDE_PATTERN` | `Library/CloudStorage` | Paths to ignore (regex) |
+| `REPO_NAME` | `musescore-scores` | GitHub repo name (setup only) |
 | `BRANCH` | `main` | Git branch |
-| `DEBOUNCE` | `5` | Seconds to wait after last file change |
-
-Override at runtime:
-
-```bash
-SCORES_DIRS="~/Music/Scores ~/Desktop" GIT_DIR=/Users/jay ./setup.sh
-SCORES_DIRS="~/Music/Scores ~/Desktop" GIT_DIR=/Users/jay ./install-launchd.sh
-```
+| `DEBOUNCE` | `5` | Seconds after last change before commit |
 
 ## Logs
 
 ```
 ~/Library/Logs/musescore-backup.log
 ~/Library/Logs/musescore-backup-error.log
+~/Library/Logs/musescore-backup-update.log
 ```
 
-## Launchd management
+## Launchd
 
 ```bash
-# Stop
-launchctl unload ~/Library/LaunchAgents/com.user.musescore-backup.plist
-
-# Restart
-launchctl unload ~/Library/LaunchAgents/com.user.musescore-backup.plist
-launchctl load ~/Library/LaunchAgents/com.user.musescore-backup.plist
-
-# Status
-launchctl list | grep musescore
+launchctl list | grep musescore                                    # status
+launchctl unload ~/Library/LaunchAgents/com.user.musescore-backup.plist   # stop
+launchctl load  ~/Library/LaunchAgents/com.user.musescore-backup.plist    # start
 ```

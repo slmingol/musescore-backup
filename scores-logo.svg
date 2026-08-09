@@ -1,51 +1,95 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="90" viewBox="0 0 900 90">
   <rect width="900" height="90" rx="8" fill="#0D1117"/>
 
-  <!-- Staff lines -->
-  <line x1="16" y1="22" x2="155" y2="22" stroke="#2A3A52" stroke-width="1.2"/>
-  <line x1="16" y1="30" x2="155" y2="30" stroke="#2A3A52" stroke-width="1.2"/>
-  <line x1="16" y1="38" x2="155" y2="38" stroke="#2A3A52" stroke-width="1.2"/>
-  <line x1="16" y1="46" x2="155" y2="46" stroke="#2A3A52" stroke-width="1.2"/>
-  <line x1="16" y1="54" x2="155" y2="54" stroke="#2A3A52" stroke-width="1.2"/>
+  <!-- Staff lines (faint, behind everything) -->
+  <line x1="5"  y1="18" x2="210" y2="18" stroke="#111A26" stroke-width="1.2"/>
+  <line x1="5"  y1="26" x2="210" y2="26" stroke="#111A26" stroke-width="1.2"/>
+  <line x1="5"  y1="34" x2="210" y2="34" stroke="#111A26" stroke-width="1.2"/>
+  <line x1="5"  y1="42" x2="210" y2="42" stroke="#111A26" stroke-width="1.2"/>
+  <line x1="5"  y1="50" x2="210" y2="50" stroke="#111A26" stroke-width="1.2"/>
 
-  <!-- Beamed eighth notes — ascending phrase -->
-  <!-- Note 1: blue, below staff -->
-  <ellipse cx="44" cy="58" rx="7" ry="5" fill="#4A9EFF" transform="rotate(-15,44,58)"/>
-  <!-- Note 2: green, line 3 -->
-  <ellipse cx="88" cy="42" rx="7" ry="5" fill="#3FB950" transform="rotate(-15,88,42)"/>
-  <!-- Note 3: lighter blue, line 1 -->
-  <ellipse cx="132" cy="26" rx="7" ry="5" fill="#58A6FF" transform="rotate(-15,132,26)"/>
+  <!-- Stacked score files -->
+  <!-- Bottom file (angled back) -->
+  <rect x="12" y="68" width="178" height="17" rx="2" fill="#0D1A2A" stroke="#1E2A3D" stroke-width="1.2"
+        transform="rotate(-2,100,76)"/>
+  <!-- Middle file -->
+  <rect x="14" y="63" width="176" height="17" rx="2" fill="#111827" stroke="#1E2A3D" stroke-width="1.2"
+        transform="rotate(-1,102,71)"/>
+  <!-- Top file (flat) -->
+  <rect x="16" y="58" width="174" height="17" rx="2" fill="#161B22" stroke="#2A3A52" stroke-width="1.3"/>
+  <!-- Lines on top file suggesting score content -->
+  <line x1="28" y1="63" x2="100" y2="63" stroke="#2A3A52" stroke-width="1"/>
+  <line x1="28" y1="67" x2="85"  y2="67" stroke="#2A3A52" stroke-width="1"/>
+  <line x1="28" y1="71" x2="95"  y2="71" stroke="#2A3A52" stroke-width="1"/>
+  <!-- Small treble clef hint on file -->
+  <text x="112" y="72" font-family="serif" font-size="12" fill="#2A3A52">𝄞</text>
 
-  <!-- Stems -->
-  <line x1="50" y1="57" x2="50" y2="12" stroke="#4A9EFF" stroke-width="1.8"/>
-  <line x1="94" y1="41" x2="94" y2="10" stroke="#3FB950" stroke-width="1.8"/>
-  <line x1="138" y1="25" x2="138" y2="8" stroke="#58A6FF" stroke-width="1.8"/>
+  <!-- Tail (behind body, curling around right side) -->
+  <path d="M148 60 C 175 65 180 50 162 46"
+        stroke="#3A4A5C" stroke-width="6" fill="none" stroke-linecap="round"/>
 
-  <!-- Beam: ascending -->
-  <polygon points="50,7 138,3 138,11 50,15" fill="#8B949E"/>
+  <!-- Body (very fat, curled horizontal — sleeping) -->
+  <ellipse cx="106" cy="52" rx="48" ry="18" fill="#21262D" stroke="#3A4A5C" stroke-width="1.5"/>
+
+  <!-- Head drooping left (sleeping) -->
+  <circle cx="60" cy="48" r="19" fill="#21262D" stroke="#3A4A5C" stroke-width="1.5"/>
+
+  <!-- Left ear -->
+  <polygon points="45,34 51,18 63,34" fill="#21262D" stroke="#3A4A5C" stroke-width="1.5" stroke-linejoin="round"/>
+  <polygon points="48,33 52,22 61,33" fill="#4A2040" opacity="0.9"/>
+  <!-- Right ear -->
+  <polygon points="62,34 72,18 78,34" fill="#21262D" stroke="#3A4A5C" stroke-width="1.5" stroke-linejoin="round"/>
+  <polygon points="65,33 71,22 76,33" fill="#4A2040" opacity="0.9"/>
+
+  <!-- Eyes CLOSED (sleeping arcs — happy/peaceful) -->
+  <path d="M49,46 Q53,42 57,46" stroke="#3FB950" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M63,46 Q67,42 71,46" stroke="#3FB950" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+  <!-- Nose -->
+  <polygon points="58,54 60,57 62,54 60,52" fill="#CC6699"/>
+
+  <!-- Whiskers left -->
+  <line x1="24" y1="52" x2="48" y2="53" stroke="#8B949E" stroke-width="1"/>
+  <line x1="24" y1="55" x2="48" y2="55" stroke="#8B949E" stroke-width="1"/>
+  <!-- Whiskers right -->
+  <line x1="72" y1="53" x2="96" y2="52" stroke="#8B949E" stroke-width="1"/>
+  <line x1="72" y1="55" x2="96" y2="55" stroke="#8B949E" stroke-width="1"/>
+
+  <!-- Zzz floating up from cat -->
+  <text x="148" y="48" font-family="SF Mono,Consolas,monospace" font-size="13" font-weight="700"
+        fill="#8B949E" opacity="0.85">z</text>
+  <text x="159" y="38" font-family="SF Mono,Consolas,monospace" font-size="10" font-weight="700"
+        fill="#8B949E" opacity="0.55">z</text>
+  <text x="168" y="30" font-family="SF Mono,Consolas,monospace" font-size="7" font-weight="700"
+        fill="#8B949E" opacity="0.3">z</text>
+
+  <!-- Small lock on files (keeping them safe) -->
+  <rect x="182" y="62" width="10" height="8" rx="1" fill="none" stroke="#3FB950" stroke-width="1.2"/>
+  <path d="M184,62 Q184,58 187,58 Q190,58 190,62" fill="none" stroke="#3FB950" stroke-width="1.2"/>
+  <circle cx="187" cy="66" r="1.5" fill="#3FB950"/>
 
   <!-- Vertical divider -->
-  <line x1="170" y1="8" x2="170" y2="82" stroke="#2A3A52" stroke-width="1"/>
+  <line x1="218" y1="8" x2="218" y2="82" stroke="#2A3A52" stroke-width="1"/>
 
   <!-- Title -->
-  <text x="188" y="40" font-family="SF Mono,Consolas,monospace" font-size="26" font-weight="700">
+  <text x="232" y="40" font-family="SF Mono,Consolas,monospace" font-size="24" font-weight="700">
     <tspan fill="#E6EDF3">musescore</tspan><tspan fill="#4A9EFF">-scores</tspan>
   </text>
 
   <!-- Subtitle -->
-  <text x="188" y="58" font-family="SF Mono,Consolas,monospace" font-size="13" fill="#8B949E">private score archive · auto-committed on save</text>
+  <text x="232" y="58" font-family="SF Mono,Consolas,monospace" font-size="12" fill="#8B949E">Jinxey's private score archive · auto-committed on save</text>
 
   <!-- Bottom rule -->
-  <line x1="188" y1="68" x2="882" y2="68" stroke="#2A3A52" stroke-width="1"/>
+  <line x1="232" y1="68" x2="882" y2="68" stroke="#2A3A52" stroke-width="1"/>
 
   <!-- Badge row -->
-  <text x="188" y="81" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#3FB950">fswatch</text>
-  <text x="248" y="81" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
-  <text x="258" y="81" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">launchd</text>
-  <text x="318" y="81" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
-  <text x="328" y="81" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">macOS</text>
-  <text x="388" y="81" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
-  <text x="398" y="81" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">git</text>
-  <text x="428" y="81" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
-  <text x="438" y="81" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">github</text>
+  <text x="232" y="82" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#3FB950">fswatch</text>
+  <text x="278" y="82" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
+  <text x="288" y="82" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">launchd</text>
+  <text x="340" y="82" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
+  <text x="350" y="82" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">macOS</text>
+  <text x="396" y="82" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
+  <text x="406" y="82" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">git</text>
+  <text x="430" y="82" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58">·</text>
+  <text x="440" y="82" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#8B949E">github</text>
 </svg>

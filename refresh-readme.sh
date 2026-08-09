@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Manually regenerate and push the README in the musescore-scores repo
+# Regenerate inventory.svg and README.md in the musescore-scores repo and push
 
 set -euo pipefail
 
@@ -10,42 +10,68 @@ cd "$GIT_DIR"
 
 count=$(git ls-files -- '*.mscz' | wc -l | tr -d ' ')
 updated=$(date '+%Y-%m-%d %H:%M')
-rows=""
+tmpdata=$(mktemp)
+row_h=26; header_h=40; width=700
 
-while IFS=$'\t' read -r date path; do
-  name=$(basename "$path")
-  folder=$(dirname "$path")
-  [[ "$folder" == "." ]] && folder=""
-  url_path="${path// /%20}"
+{ git ls-files -- '*.mscz' | grep '/' | sort
+  git ls-files -- '*.mscz' | grep -v '/' | sort
+} | while IFS= read -r f; do
+  d=$(git log -1 --format="%ad" --date=format:'%Y-%m-%d %H:%M' -- "$f")
+  n=$(basename "$f"); fld=$(dirname "$f"); [[ "$fld" == "." ]] && fld=""
+  printf '%s\t%s\t%s\n' "$n" "$fld" "$d"
+done > "$tmpdata"
 
-  if [[ -z "$folder" ]]; then
-    rows+="| [${name}](${url_path}) | _(root)_ | \`${date}\` |"$'\n'
-  else
-    url_folder="${folder// /%20}"
-    rows+="| [${name}](${url_path}) | [${folder}/](${url_folder}/) | \`${date}\` |"$'\n'
-  fi
-done < <({ git ls-files -- '*.mscz' | grep '/' | sort; git ls-files -- '*.mscz' | grep -v '/' | sort; } | while IFS= read -r f; do
-  date=$(git log -1 --format="%ad" --date=format:'%Y-%m-%d %H:%M' -- "$f")
-  printf '%s\t%s\n' "$date" "$f"
-done)
+height=$(( header_h + count * row_h + 16 ))
+
+{
+  printf '<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d">\n' "$width" "$height" "$width" "$height"
+  printf '<rect width="%d" height="%d" fill="#0D1117"/>\n' "$width" "$height"
+  printf '<rect width="%d" height="%d" fill="#161B22"/>\n' "$width" "$header_h"
+  printf '<rect y="32" width="%d" height="8" fill="#161B22"/>\n' "$width"
+  printf '<text x="16" y="25" font-family="SF Mono,Consolas,monospace" font-size="11" font-weight="700" fill="#4A9EFF" letter-spacing="0.8">SCORE</text>\n'
+  printf '<text x="300" y="25" font-family="SF Mono,Consolas,monospace" font-size="11" font-weight="700" fill="#3FB950" letter-spacing="0.8">FOLDER</text>\n'
+  printf '<text x="524" y="25" font-family="SF Mono,Consolas,monospace" font-size="11" font-weight="700" fill="#8B949E" letter-spacing="0.8">COMMITTED</text>\n'
+  printf '<line x1="0" y1="%d" x2="%d" y2="%d" stroke="#2A3A52" stroke-width="1"/>\n' "$header_h" "$width" "$header_h"
+  printf '<line x1="292" y1="0" x2="292" y2="%d" stroke="#1E2A3D" stroke-width="1"/>\n' "$height"
+  printf '<line x1="520" y1="0" x2="520" y2="%d" stroke="#1E2A3D" stroke-width="1"/>\n' "$height"
+
+  i=0
+  while IFS=$'\t' read -r name folder date; do
+    ry=$(( header_h + i * row_h )); ty=$(( ry + 17 ))
+    (( i % 2 == 1 )) && printf '<rect x="0" y="%d" width="%d" height="%d" fill="#0F1923"/>\n' "$ry" "$width" "$row_h"
+    sn="${name//&/&amp;}"; sn="${sn//</&lt;}"; sn="${sn//>/&gt;}"
+    sf="${folder//&/&amp;}"; sf="${sf//</&lt;}"; sf="${sf//>/&gt;}"
+    [[ ${#sn} -gt 38 ]] && sn="${sn:0:35}..."
+    [[ -z "$sf" ]] && sf="--" || { [[ ${#sf} -gt 28 ]] && sf="${sf:0:25}..."; }
+    printf '<text x="16" y="%d" font-family="SF Mono,Consolas,monospace" font-size="11" fill="#58A6FF">%s</text>\n' "$ty" "$sn"
+    printf '<text x="300" y="%d" font-family="SF Mono,Consolas,monospace" font-size="11" fill="#3FB950">%s</text>\n' "$ty" "$sf"
+    printf '<text x="524" y="%d" font-family="SF Mono,Consolas,monospace" font-size="11" fill="#6E7681">%s</text>\n' "$ty" "$date"
+    i=$((i+1))
+  done < "$tmpdata"
+
+  fy=$(( height - 4 ))
+  printf '<line x1="0" y1="%d" x2="%d" y2="%d" stroke="#1E2A3D" stroke-width="1"/>\n' "$((height-16))" "$width" "$((height-16))"
+  printf '<text x="%d" y="%d" font-family="SF Mono,Consolas,monospace" font-size="10" fill="#484F58" text-anchor="end">%d files · updated %s</text>\n' "$((width-12))" "$fy" "$count" "$updated"
+  printf '</svg>\n'
+} > inventory.svg
+
+rm -f "$tmpdata"
 
 {
   echo "# musescore-scores"
   echo ""
-  echo "Auto-backup of MuseScore 4 scores (${count} files). Committed automatically by [musescore-backup](https://github.com/slmingol/musescore-backup) via fswatch + launchd."
+  echo "Private backup of MuseScore 4 scores, auto-committed by [musescore-backup](https://github.com/slmingol/musescore-backup) via fswatch + launchd. Each \`.mscz\` save triggers a commit within 5 seconds."
   echo ""
-  echo "*Last updated: ${updated}*"
+  echo "## Inventory"
   echo ""
-  echo "| 🎵 Score | 📁 Folder | 📅 Committed |"
-  echo "|---------|---------|-------------|"
-  printf '%s' "$rows"
+  echo "![inventory](inventory.svg)"
 } > README.md
 
-if [[ -n "$(git status --porcelain README.md)" ]]; then
-  git add -- README.md
+if [[ -n "$(git status --porcelain README.md inventory.svg)" ]]; then
+  git add -- README.md inventory.svg
   git commit -m "readme: ${count} files"
   git push origin "$BRANCH"
-  echo "README updated (${count} files)."
+  echo "Updated (${count} files)."
 else
-  echo "README already up to date."
+  echo "Already up to date."
 fi

@@ -53,41 +53,37 @@ update_readme() {
   local dir="$1"
   cd "$dir"
 
-  local count updated listing
+  local count updated rows
   count=$(git ls-files -- '*.mscz' | wc -l | tr -d ' ')
   updated=$(date '+%Y-%m-%d %H:%M')
-  listing=$(git ls-files -- '*.mscz' | sort | awk -F/ \
-    -v folder="📁" -v score="🎼" '
-    {
-      dir = (NF == 1) ? "(root)" : $1
-      counts[dir]++
-      if (!(dir in seen)) { seen[dir]=1; order[++n]=dir }
-    }
-    END {
-      print "| " folder " Folder | " score " Files |"
-      print "|--------|------:|"
-      for (i=1; i<=n; i++) {
-        d = order[i]
-        if (d == "(root)") { printf "| _(root)_ | **%d** |\n", counts[d] }
-        else { url=d; gsub(/ /, "%20", url); printf "| [%s/](%s/) | **%d** |\n", d, url, counts[d] }
-      }
-    }
-  ')
+  rows=""
 
-  local recent
-  recent=$(git log --name-only --format="%ad" --date=format:'%Y-%m-%d %H:%M' -- '*.mscz' | awk \
-    -v note="🎵" -v cal="📅" '
+  while IFS=$'\t' read -r date path; do
+    local name folder url_path url_folder size szfmt
+    name=$(basename "$path")
+    folder=$(dirname "$path")
+    [[ "$folder" == "." ]] && folder=""
+    url_path="${path// /%20}"
+
+    if [[ -f "$path" ]]; then
+      size=$(stat -f %z "$path")
+      if   (( size >= 1048576 )); then szfmt="$(( size/1048576 )) MB"
+      elif (( size >= 1024 ));    then szfmt="$(( size/1024 )) KB"
+      else                             szfmt="${size} B"
+      fi
+    else
+      szfmt="—"
+    fi
+
+    if [[ -z "$folder" ]]; then
+      rows+="| [${name}](${url_path}) | _(root)_ | ${szfmt} | \`${date}\` |"$'\n'
+    else
+      url_folder="${folder// /%20}"
+      rows+="| [${name}](${url_path}) | [${folder}/](${url_folder}/) | ${szfmt} | \`${date}\` |"$'\n'
+    fi
+  done < <(git log --name-only --format="%ad" --date=format:'%Y-%m-%d %H:%M' -- '*.mscz' | awk '
     /^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$/ { date=$0; next }
-    /\.mscz$/ { if (!seen[$0]++) { n++; dates[n]=date; files[n]=$0 } }
-    END {
-      print "| " note " Score | " cal " Committed |"
-      print "|--------|-----------|"
-      for (i=1; i<=n && i<=10; i++) {
-        path=files[i]; url=path; gsub(/ /, "%20", url)
-        split(path, a, "/"); name=a[length(a)]
-        printf "| [%s](%s) | `%s` |\n", name, url, dates[i]
-      }
-    }
+    /\.mscz$/ { if (!seen[$0]++) print date "\t" $0 }
   ')
 
   {
@@ -97,13 +93,9 @@ update_readme() {
     echo ""
     echo "*Last updated: ${updated}*"
     echo ""
-    echo "## Recent"
-    echo ""
-    echo "${recent}"
-    echo ""
-    echo "## By folder"
-    echo ""
-    echo "${listing}"
+    echo "| 🎵 Score | 📁 Folder | 💾 Size | 📅 Committed |"
+    echo "|---------|---------|--------|-------------|"
+    printf '%s' "$rows"
   } > README.md
 
   if [[ -n "$(git status --porcelain README.md)" ]]; then

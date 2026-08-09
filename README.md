@@ -25,8 +25,10 @@ Auto-commits `.mscz` changes to a private GitHub repo. Watches one or more direc
 | File | Purpose |
 |------|---------|
 | `setup.sh` | One-time setup: deps, git init, GitHub repo creation |
-| `watch.sh` | Watcher daemon (fswatch → debounce → git commit + push) |
-| `install-launchd.sh` | Registers `watch.sh` as a launchd agent |
+| `watch.sh` | Watcher daemon (fswatch → debounce → git commit + push + readme update) |
+| `install-launchd.sh` | Registers `watch.sh` as a persistent launchd agent |
+| `install-autoupdate.sh` | Registers a daily 3am launchd timer to pull updates and restart the watcher |
+| `update.sh` | Pull latest, reload watcher — run manually or via autoupdate timer |
 
 ## Configuration
 

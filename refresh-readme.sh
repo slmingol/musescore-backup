@@ -34,10 +34,10 @@ while IFS=$'\t' read -r date path; do
     url_folder="${folder// /%20}"
     rows+="| [${name}](${url_path}) | [${folder}/](${url_folder}/) | ${szfmt} | \`${date}\` |"$'\n'
   fi
-done < <(git log --name-only --format="%ad" --date=format:'%Y-%m-%d %H:%M' -- '*.mscz' | awk '
-  /^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$/ { date=$0; next }
-  /\.mscz$/ { if (!seen[$0]++) print date "\t" $0 }
-' | sort -t$'\t' -k2)
+done < <(git ls-files -- '*.mscz' | sort | while IFS= read -r f; do
+  date=$(git log -1 --format="%ad" --date=format:'%Y-%m-%d %H:%M' -- "$f")
+  printf '%s\t%s\n' "$date" "$f"
+done)
 
 {
   echo "# musescore-scores"

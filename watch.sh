@@ -59,16 +59,16 @@ update_readme() {
   listing=$(git ls-files -- '*.mscz' | sort | awk -F/ '
     {
       dir = (NF == 1) ? "(root)" : $1
-      file = $NF
-      files[dir] = files[dir] "- " file "\n"
       counts[dir]++
       if (!(dir in seen)) { seen[dir]=1; order[++n]=dir }
     }
     END {
+      print "| Folder | Files |"
+      print "|--------|------:|"
       for (i=1; i<=n; i++) {
         d = order[i]
-        label = (d == "(root)") ? "Root" : d "/"
-        printf "**%s** (%d)\n%s\n", label, counts[d], files[d]
+        label = (d == "(root)") ? "_(root)_" : d "/"
+        printf "| %s | %d |\n", label, counts[d]
       }
     }
   ')

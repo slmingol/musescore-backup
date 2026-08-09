@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-SCORES_DIR="${SCORES_DIR:-$HOME/Documents/MuseScore4/Scores}"
+SCORES_DIR="${SCORES_DIR:-/home/jay}"
 REPO_NAME="${REPO_NAME:-musescore-scores}"
 BRANCH="${BRANCH:-main}"
 

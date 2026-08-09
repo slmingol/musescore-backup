@@ -128,10 +128,26 @@ update_readme() {
 
   rm -f "$tmpdata"
 
+  # Build watched locations table
+  local loc_table=""
+  loc_table+="| Path | Depth |"$'\n'
+  loc_table+="|------|-------|"$'\n'
+  loc_table+="| \`${GIT_DIR}/\` | top-level only |"$'\n'
+  for _wd in "${watch_dirs[@]}"; do
+    loc_table+="| \`${_wd}\` | recursive |"$'\n'
+  done
+
   {
     echo "# musescore-scores"
     echo ""
     echo "Private backup of MuseScore 4 scores, auto-committed by [musescore-backup](https://github.com/slmingol/musescore-backup) via fswatch + launchd. Each \`.mscz\` save triggers a commit within 5 seconds."
+    echo ""
+    echo "## Watched Locations"
+    echo ""
+    echo "Files are committed automatically when saved in any of these locations."
+    echo "Moving a file outside these paths will appear as a deletion."
+    echo ""
+    printf '%s' "$loc_table"
     echo ""
     echo "## Inventory"
     echo ""

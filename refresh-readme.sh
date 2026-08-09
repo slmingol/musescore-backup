@@ -3,10 +3,21 @@
 
 set -euo pipefail
 
+SCORES_DIRS="${SCORES_DIRS:-$HOME/Documents/MuseScore4/Scores|$HOME/Desktop|$HOME/Downloads|$HOME/Desktop/FE:PIT EXERCISES|$HOME/Library/Application Support/MuseScore*}"
 GIT_DIR="${GIT_DIR:-/Users/jay}"
 BRANCH="${BRANCH:-main}"
 
 cd "$GIT_DIR"
+
+# Expand SCORES_DIRS into watch_dirs (same logic as watch.sh)
+IFS='|' read -ra _raw_dirs <<< "$SCORES_DIRS"
+watch_dirs=()
+for _raw in "${_raw_dirs[@]}"; do
+  _raw="${_raw/#\~/$HOME}"
+  while IFS= read -r _d; do
+    [[ -d "$_d" ]] && watch_dirs+=("$_d")
+  done < <(compgen -G "$_raw" 2>/dev/null || echo "$_raw")
+done
 
 count=$(git ls-files -- '*.mscz' | wc -l | tr -d ' ')
 updated=$(date '+%Y-%m-%d %H:%M')
@@ -75,10 +86,26 @@ done < "$tmpdata"
 
 rm -f "$tmpdata"
 
+# Build watched locations table
+loc_table=""
+loc_table+="| Path | Depth |"$'\n'
+loc_table+="|------|-------|"$'\n'
+loc_table+="| \`${GIT_DIR}/\` | top-level only |"$'\n'
+for _wd in "${watch_dirs[@]}"; do
+  loc_table+="| \`${_wd}\` | recursive |"$'\n'
+done
+
 {
   echo "# musescore-scores"
   echo ""
   echo "Private backup of MuseScore 4 scores, auto-committed by [musescore-backup](https://github.com/slmingol/musescore-backup) via fswatch + launchd. Each \`.mscz\` save triggers a commit within 5 seconds."
+  echo ""
+  echo "## Watched Locations"
+  echo ""
+  echo "Files are committed automatically when saved in any of these locations."
+  echo "Moving a file outside these paths will appear as a deletion."
+  echo ""
+  printf '%s' "$loc_table"
   echo ""
   echo "## Inventory"
   echo ""

@@ -50,7 +50,7 @@
   <text x="180" y="126" font-family="SF Mono,Consolas,monospace" font-size="11" font-weight="700" fill="#3A5878">.mscz</text>
 
   <!-- ===== JINXEY — scaled 1.3x, shifted down 22px to sit on files ===== -->
-  <g transform="translate(0,22) translate(105,57) scale(1.3) translate(-105,-57)">
+  <g transform="translate(0,-9) translate(105,57) scale(1.3) translate(-105,-57)">
 
     <!-- Tail (tight curl) -->
     <path d="M158 74 C 186 80 190 58 170 52"

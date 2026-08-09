@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-SCORES_DIRS="${SCORES_DIRS:-$HOME/Documents/MuseScore4/Scores $HOME/Desktop $HOME/Downloads}"
+SCORES_DIRS="${SCORES_DIRS:-$HOME/Documents/MuseScore4/Scores|$HOME/Desktop|$HOME/Downloads|$HOME/Desktop/FE:PIT EXERCISES|$HOME/Library/Application Support/MuseScore*}"
 GIT_DIR="${GIT_DIR:-/Users/jay}"
 BRANCH="${BRANCH:-main}"
 DEBOUNCE="${DEBOUNCE:-5}"  # seconds to wait after last change before committing
@@ -153,7 +153,15 @@ update_readme() {
   fi
 }
 
-read -ra watch_dirs <<< "$SCORES_DIRS"
+# Split on | and expand globs (handles spaces in paths, MuseScore* etc.)
+IFS='|' read -ra _raw_dirs <<< "$SCORES_DIRS"
+watch_dirs=()
+for _raw in "${_raw_dirs[@]}"; do
+  _raw="${_raw/#\~/$HOME}"
+  while IFS= read -r _d; do
+    [[ -d "$_d" ]] && watch_dirs+=("$_d")
+  done < <(compgen -G "$_raw" 2>/dev/null || echo "$_raw")
+done
 
 log "Watching: ${watch_dirs[*]} (branch: $BRANCH, excluding: $EXCLUDE_PATTERN)..."
 

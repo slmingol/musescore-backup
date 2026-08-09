@@ -5,7 +5,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WATCH_SCRIPT="$SCRIPT_DIR/watch.sh"
-SCORES_DIRS="${SCORES_DIRS:-$HOME/Documents/MuseScore4/Scores $HOME/Desktop $HOME/Downloads}"
+SCORES_DIRS="${SCORES_DIRS:-$HOME/Documents/MuseScore4/Scores|$HOME/Desktop|$HOME/Downloads|$HOME/Desktop/FE:PIT EXERCISES|$HOME/Library/Application Support/MuseScore*}"
 GIT_DIR="${GIT_DIR:-/Users/jay}"
 EXCLUDE_PATTERN="${EXCLUDE_PATTERN:-Library/CloudStorage}"
 LABEL="com.user.musescore-backup"

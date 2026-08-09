@@ -30,7 +30,7 @@ Requires `gh auth login` first.
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `SCORES_DIRS` | `~/Documents/MuseScore4/Scores ~/Desktop ~/Downloads` | Space-separated dirs to watch |
+| `SCORES_DIRS` | `~/Documents/MuseScore4/Scores\|~/Desktop\|~/Downloads\|~/Desktop/FE:PIT EXERCISES\|~/Library/Application Support/MuseScore*` | `\|`-separated dirs to watch; globs expanded at startup |
 | `GIT_DIR` | `/Users/jay` | Git repo root |
 | `EXCLUDE_PATTERN` | `Library/CloudStorage` | Paths to ignore (regex) |
 | `REPO_NAME` | `musescore-scores` | GitHub repo name (setup only) |

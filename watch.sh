@@ -167,15 +167,13 @@ log "Watching: ${watch_dirs[*]} (branch: $BRANCH, excluding: $EXCLUDE_PATTERN)..
 
 fswatch \
   --recursive \
-  --include='\.mscz$' \
-  --exclude="$EXCLUDE_PATTERN" \
   --extended \
   --event=Updated \
   --event=Created \
   --event=Removed \
   --event=Renamed \
   --latency="$DEBOUNCE" \
-  "${watch_dirs[@]}" | while IFS= read -r changed_path; do
+  "${watch_dirs[@]}" | grep -E '\.mscz$' | grep -v "$EXCLUDE_PATTERN" | while IFS= read -r changed_path; do
     log "Change detected: $(basename "$changed_path")"
     commit_changes "$GIT_DIR" || log "ERROR: commit/push failed"
     update_readme "$GIT_DIR" || log "ERROR: readme update failed"

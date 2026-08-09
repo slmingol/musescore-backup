@@ -49,6 +49,35 @@ commit_changes() {
   log "Pushed: $msg"
 }
 
+update_readme() {
+  local dir="$1"
+  cd "$dir"
+
+  local count updated listing
+  count=$(git ls-files -- '*.mscz' | wc -l | tr -d ' ')
+  updated=$(date '+%Y-%m-%d %H:%M')
+  listing=$(git ls-files -- '*.mscz' | sort | sed 's/^/- /')
+
+  {
+    echo "# musescore-scores"
+    echo ""
+    echo "Auto-backup of MuseScore 4 scores (${count} files). Committed automatically by [musescore-backup](https://github.com/slmingol/musescore-backup) via fswatch + launchd."
+    echo ""
+    echo "*Last updated: ${updated}*"
+    echo ""
+    echo "## Scores"
+    echo ""
+    echo "${listing}"
+  } > README.md
+
+  if [[ -n "$(git status --porcelain README.md)" ]]; then
+    git add -- README.md
+    git commit -m "readme: ${count} files"
+    git push origin "$BRANCH"
+    log "Updated README (${count} files)"
+  fi
+}
+
 read -ra watch_dirs <<< "$SCORES_DIRS"
 
 log "Watching: ${watch_dirs[*]} (branch: $BRANCH, excluding: $EXCLUDE_PATTERN)..."
@@ -66,4 +95,5 @@ fswatch \
   "${watch_dirs[@]}" | while IFS= read -r changed_path; do
     log "Change detected: $(basename "$changed_path")"
     commit_changes "$GIT_DIR" || log "ERROR: commit/push failed"
+    update_readme "$GIT_DIR" || log "ERROR: readme update failed"
   done

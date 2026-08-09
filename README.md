@@ -29,6 +29,8 @@ Auto-commits `.mscz` changes to a private GitHub repo. Watches one or more direc
 | `install-launchd.sh` | Registers `watch.sh` as a persistent launchd agent |
 | `install-autoupdate.sh` | Registers a daily 3am launchd timer to pull updates and restart the watcher |
 | `update.sh` | Pull latest, reload watcher — run manually or via autoupdate timer |
+| `trigger.sh` | Manually run a full backup cycle: commit all `.mscz` changes + update README |
+| `refresh-readme.sh` | Regenerate and push the README in the scores repo without committing scores |
 
 ## Configuration
 

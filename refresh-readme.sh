@@ -10,6 +10,7 @@ cd "$GIT_DIR"
 
 count=$(git ls-files -- '*.mscz' | wc -l | tr -d ' ')
 updated=$(date '+%Y-%m-%d %H:%M')
+
 listing=$(git ls-files -- '*.mscz' | sort | awk -F/ '
   {
     dir = (NF == 1) ? "(root)" : $1
@@ -27,6 +28,18 @@ listing=$(git ls-files -- '*.mscz' | sort | awk -F/ '
   }
 ')
 
+recent=$(git log --name-only --format="%ad" --date=format:'%Y-%m-%d %H:%M' -- '*.mscz' | awk '
+  /^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$/ { date=$0; next }
+  /\.mscz$/ { if (!seen[$0]++) { n++; dates[n]=date; files[n]=$0 } }
+  END {
+    print "| File | Committed |"
+    print "|------|-----------|"
+    for (i=1; i<=n && i<=10; i++) {
+      split(files[i], a, "/"); printf "| %s | %s |\n", a[length(a)], dates[i]
+    }
+  }
+')
+
 {
   echo "# musescore-scores"
   echo ""
@@ -34,7 +47,11 @@ listing=$(git ls-files -- '*.mscz' | sort | awk -F/ '
   echo ""
   echo "*Last updated: ${updated}*"
   echo ""
-  echo "## Scores"
+  echo "## Recent"
+  echo ""
+  echo "${recent}"
+  echo ""
+  echo "## By folder"
   echo ""
   echo "${listing}"
 } > README.md
